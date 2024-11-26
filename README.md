@@ -30,7 +30,7 @@ const discordPayloadSchema = z.object({
     "title": "test",
     "description": "",
     "content": "test  <@649998586154844160>",
-    "channelId":"1305144390540595290",
+    "channelId":"XXXX",
     "fieldsArr": [
         {
             "name": "",
