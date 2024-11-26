@@ -5,7 +5,8 @@ export const POST = async (request: Request) => {
   const body = await request.json();
 
   const validPayload = validatePayloadAndReturnData(body);
-  if (!validPayload) return "failed, you can see the log on discord.";
+  if (!validPayload)
+    return new Response("failed, you can see the log on discord.");
 
   const discordClient = DiscordClient();
   const { content, embedData, channelId } = validPayload;
