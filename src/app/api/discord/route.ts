@@ -1,7 +1,8 @@
+import { NextRequest } from "next/server";
 import DiscordClient from "./discord";
 import { validatePayloadAndReturnData } from "./validatePayloadAndReturnData";
 
-export const POST = async (request: Request) => {
+export const POST = async (request: NextRequest) => {
   const body = await request.json();
 
   const validPayload = validatePayloadAndReturnData(body);
