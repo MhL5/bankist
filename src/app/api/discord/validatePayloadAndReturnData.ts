@@ -5,9 +5,13 @@ import {
 } from "./constants";
 import discordPayloadSchema, { type DiscordPayloadSchema } from "./schema";
 import { sendValidationErrorNotification } from "./sendValidationErrorNotification";
+import { serverEnv } from "@/utils/env/serverEnv";
 
 type ValidatePayloadAndReturnData = (
-  data: DiscordPayloadSchema & { variant: DiscordEventsColorVariants }
+  data: DiscordPayloadSchema & {
+    variant: DiscordEventsColorVariants;
+    channelId: string;
+  }
 ) => { embedData: APIEmbed; content: string; channelId: string } | null;
 
 /**
@@ -26,15 +30,18 @@ export const validatePayloadAndReturnData: ValidatePayloadAndReturnData = (
       ] || discordEventsColorVariants["unknown"],
   });
 
-  if (!validationResult.success) {
+  const allowedChannels = serverEnv.DISCORD_ALLOWED_CHANNELS.split(",");
+
+  if (!validationResult.success || !allowedChannels.includes(data.channelId)) {
     sendValidationErrorNotification(validationResult.error);
     return null;
   }
 
   // If validation is successful, construct the embed data
   const validPayload = validationResult.data;
+
   return {
-    channelId: validPayload.channelId,
+    channelId: data.channelId,
     embedData: {
       title: validPayload.title,
       color: validPayload.color,
