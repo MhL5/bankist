@@ -39,14 +39,14 @@ export default function DiscordClient() {
     content: string,
     channelId: string
   ): Promise<RESTPostAPIChannelMessageResult> {
-    return rest.post(Routes.channelMessages(channelId ?? ""), {
+    return (await rest.post(Routes.channelMessages(channelId ?? ""), {
       body: {
         // example for pinging a user: `<@YOUR_USER_ID>`
         // example: `hey <@520465292271288322>`
         content,
         embeds: [embed],
       },
-    }) as Promise<RESTPostAPIChannelMessageResult>;
+    })) as Promise<RESTPostAPIChannelMessageResult>;
   }
 
   return {
